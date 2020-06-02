@@ -23,7 +23,7 @@ class Svg extends ImageProvider<Svg> {
   }
 
   @override
-  ImageStreamCompleter load(Svg key) {
+  ImageStreamCompleter load(Svg key, nil) {
     return MultiFrameImageStreamCompleter(
       codec: _loadAsync(key),
       scale: 1.0,
