@@ -9,8 +9,8 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class Svg extends ImageProvider<Svg> {
   final String asset;
-  final int width;
-  final int height;
+  final double width;
+  final double height;
 
   const Svg(this.asset, {this.width = 100, this.height = 100})
       : assert(asset != null),
