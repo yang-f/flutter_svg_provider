@@ -1,6 +1,6 @@
 name: flutter_svg_provider
 description: Generate image provider from svg path, use flutter_svg as a dependency.
-version: 0.1.3
+version: 0.1.4
 homepage: https://github.com/yang-f/flutter_svg_provider
 
 environment:
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.17.0
+  flutter_svg: ^0.18.0
 
 dev_dependencies:
   flutter_test:
