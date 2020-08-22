@@ -1,14 +1,17 @@
 # flutter_svg_provider
 
-A new Flutter package project.
+A Flutter package for using svg in `Image` widget via custom `ImageProvider`.
 
-## Getting Started
+Svg is parsed using flutter_svg dependency.
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+## Getting started
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```dart
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+
+Image(
+  width: 32,
+  height: 32,
+  image: Svg('assets/my_icon.svg'),
+)
+```
