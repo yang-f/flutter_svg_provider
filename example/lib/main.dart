@@ -19,16 +19,31 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Svg Provider Example'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(
-              width: 100,
-              height: 100,
-              image: Svg('assets/test.svg'),
+      body: DecoratedBox(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            repeat: ImageRepeat.repeat,
+            image: Svg(
+              'assets/test.svg',
+              size: Size(10, 10),
             ),
-          ],
+            colorFilter: ColorFilter.mode(
+              Colors.black12,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image(
+                width: 100,
+                height: 100,
+                image: Svg('assets/test.svg'),
+              ),
+            ],
+          ),
         ),
       ),
     );

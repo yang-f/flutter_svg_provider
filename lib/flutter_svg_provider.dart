@@ -20,15 +20,21 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Path to svg file asset
   final String asset;
 
-  /// Width and height can be specified from [Image] constrictor.
+  /// Size in logical pixels to render.
+  /// Useful for [DecorationImage].
+  /// If not specified, will use size from [Image].
+  /// If [Image] not specifies size too, will use default size 100x100.
+  final Size size; // nullable
+
+  /// Width and height can also be specified from [Image] constrictor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
-  const Svg(this.asset) : assert(asset != null);
+  const Svg(this.asset, {this.size}) : assert(asset != null);
 
   @override
   Future<SvgImageKey> obtainKey(ImageConfiguration configuration) {
-    final double logicWidth = configuration.size?.width ?? 100;
-    final double logicHeight = configuration.size?.width ?? 100;
+    final double logicWidth = size?.width ?? configuration.size?.width ?? 100;
+    final double logicHeight = size?.height ?? configuration.size?.width ?? 100;
     final double scale = configuration.devicePixelRatio ?? 1.0;
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
