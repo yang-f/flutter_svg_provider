@@ -88,7 +88,7 @@ class SvgImageKey {
     @required this.pixelWidth,
     @required this.pixelHeight,
     @required this.scale,
-  }) : assert(assetName != null),
+  })  : assert(assetName != null),
         assert(pixelWidth != null),
         assert(pixelHeight != null),
         assert(scale != null);
@@ -112,18 +112,20 @@ class SvgImageKey {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType)
+    if (other.runtimeType != runtimeType) {
       return false;
-    return other is SvgImageKey
-        && other.assetName == assetName
-        && other.pixelWidth == pixelWidth
-        && other.pixelHeight == pixelHeight
-        && other.scale == scale;
+    }
+    return other is SvgImageKey &&
+        other.assetName == assetName &&
+        other.pixelWidth == pixelWidth &&
+        other.pixelHeight == pixelHeight &&
+        other.scale == scale;
   }
 
   @override
   int get hashCode => hashValues(assetName, pixelWidth, pixelHeight, scale);
 
   @override
-  String toString() => '${objectRuntimeType(this, 'SvgImageKey')}(assetName: "$assetName", pixelWidth: $pixelWidth, pixelHeight: $pixelHeight, scale: $scale)';
+  String toString() => '${objectRuntimeType(this, 'SvgImageKey')}'
+      '(assetName: "$assetName", pixelWidth: $pixelWidth, pixelHeight: $pixelHeight, scale: $scale)';
 }
