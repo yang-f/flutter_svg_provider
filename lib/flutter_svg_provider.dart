@@ -29,7 +29,10 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Width and height can also be specified from [Image] constrictor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
-  const Svg(this.asset, {this.size}) : assert(asset != null);
+  const Svg(this.asset, {this.size, this.color}) : assert(asset != null);
+
+  /// Color to tint the SVG
+  final Color color;
 
   @override
   Future<SvgImageKey> obtainKey(ImageConfiguration configuration) {
@@ -42,6 +45,7 @@ class Svg extends ImageProvider<SvgImageKey> {
         pixelWidth: (logicWidth * scale).round(),
         pixelHeight: (logicHeight * scale).round(),
         scale: scale,
+        color: color
       ),
     );
   }
@@ -62,6 +66,7 @@ class Svg extends ImageProvider<SvgImageKey> {
         key.pixelHeight.toDouble(),
       ),
       clipToViewBox: false,
+      colorFilter: key.color == null ? null : ColorFilter.mode(key.color, BlendMode.srcIn),
     );
     final ui.Image image = await picture.toImage(
       key.pixelWidth,
@@ -88,6 +93,7 @@ class SvgImageKey {
     @required this.pixelWidth,
     @required this.pixelHeight,
     @required this.scale,
+    this.color,
   })  : assert(assetName != null),
         assert(pixelWidth != null),
         assert(pixelHeight != null),
@@ -103,6 +109,9 @@ class SvgImageKey {
   /// Height in physical pixels.
   /// Used when raterizing.
   final int pixelHeight;
+
+  /// Color to tint the SVG
+  final Color color;
 
   /// Used to calculate logical size from physical, i.e.
   /// logicalWidth = [pixelWidth] / [scale],
