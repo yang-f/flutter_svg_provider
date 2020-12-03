@@ -2,6 +2,7 @@ library flutter_svg_provider;
 
 import 'dart:async';
 import 'dart:ui' as ui show Image, Picture;
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -39,6 +40,8 @@ class Svg extends ImageProvider<SvgImageKey> {
     final double logicWidth = size?.width ?? configuration.size?.width ?? 100;
     final double logicHeight = size?.height ?? configuration.size?.width ?? 100;
     final double scale = configuration.devicePixelRatio ?? 1.0;
+    final Color color = Colors.transparent;
+
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
         assetName: asset,
@@ -66,7 +69,7 @@ class Svg extends ImageProvider<SvgImageKey> {
         key.pixelHeight.toDouble(),
       ),
       clipToViewBox: false,
-      colorFilter: key.color == null ? null : ColorFilter.mode(key.color, BlendMode.srcIn),
+      colorFilter: ColorFilter.mode(key.color, BlendMode.srcATop),
     );
     final ui.Image image = await picture.toImage(
       key.pixelWidth,
