@@ -27,20 +27,20 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// If [Image] not specifies size too, will use default size 100x100.
   final Size size; // nullable
 
+  /// Color to tint the SVG
+  final Color color;
+
   /// Width and height can also be specified from [Image] constrictor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
   const Svg(this.asset, {this.size, this.color}) : assert(asset != null);
-
-  /// Color to tint the SVG
-  final Color color;
 
   @override
   Future<SvgImageKey> obtainKey(ImageConfiguration configuration) {
     final double logicWidth = size?.width ?? configuration.size?.width ?? 100;
     final double logicHeight = size?.height ?? configuration.size?.width ?? 100;
     final double scale = configuration.devicePixelRatio ?? 1.0;
-    final Color color = Colors.transparent;
+    final Color color = this.color ?? Colors.transparent;
 
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
