@@ -2,6 +2,7 @@ library flutter_svg_provider;
 
 import 'dart:async';
 import 'dart:ui' as ui show Image, Picture;
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -26,22 +27,28 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// If [Image] not specifies size too, will use default size 100x100.
   final Size size; // nullable
 
+  /// Color to tint the SVG
+  final Color color;
+
   /// Width and height can also be specified from [Image] constrictor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
-  const Svg(this.asset, {this.size}) : assert(asset != null);
+  const Svg(this.asset, {this.size, this.color}) : assert(asset != null);
 
   @override
   Future<SvgImageKey> obtainKey(ImageConfiguration configuration) {
     final double logicWidth = size?.width ?? configuration.size?.width ?? 100;
     final double logicHeight = size?.height ?? configuration.size?.width ?? 100;
     final double scale = configuration.devicePixelRatio ?? 1.0;
+    final Color color = this.color ?? Colors.transparent;
+
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
         assetName: asset,
         pixelWidth: (logicWidth * scale).round(),
         pixelHeight: (logicHeight * scale).round(),
         scale: scale,
+        color: color
       ),
     );
   }
@@ -62,6 +69,7 @@ class Svg extends ImageProvider<SvgImageKey> {
         key.pixelHeight.toDouble(),
       ),
       clipToViewBox: false,
+      colorFilter: ColorFilter.mode(key.color, BlendMode.srcATop),
     );
     final ui.Image image = await picture.toImage(
       key.pixelWidth,
@@ -88,6 +96,7 @@ class SvgImageKey {
     @required this.pixelWidth,
     @required this.pixelHeight,
     @required this.scale,
+    this.color,
   })  : assert(assetName != null),
         assert(pixelWidth != null),
         assert(pixelHeight != null),
@@ -103,6 +112,9 @@ class SvgImageKey {
   /// Height in physical pixels.
   /// Used when raterizing.
   final int pixelHeight;
+
+  /// Color to tint the SVG
+  final Color color;
 
   /// Used to calculate logical size from physical, i.e.
   /// logicalWidth = [pixelWidth] / [scale],
