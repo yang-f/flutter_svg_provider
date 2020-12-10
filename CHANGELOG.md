@@ -25,3 +25,7 @@
 ## [0.1.6] - 2020.8.22
 
 - Take devicePixelRatio into account
+
+## [0.1.7] - 2020.12.9
+
+- Color

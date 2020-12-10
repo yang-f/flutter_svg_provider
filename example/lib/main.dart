@@ -38,8 +38,8 @@ class MyHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image(
-                width: 100,
-                height: 100,
+                width: 500,
+                height: 500,
                 image: Svg('assets/test.svg'),
                 color: Colors.red,
               ),
