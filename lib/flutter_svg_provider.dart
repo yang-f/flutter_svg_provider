@@ -44,12 +44,11 @@ class Svg extends ImageProvider<SvgImageKey> {
 
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
-        assetName: asset,
-        pixelWidth: (logicWidth * scale).round(),
-        pixelHeight: (logicHeight * scale).round(),
-        scale: scale,
-        color: color
-      ),
+          assetName: asset,
+          pixelWidth: (logicWidth * scale).round(),
+          pixelHeight: (logicHeight * scale).round(),
+          scale: scale,
+          color: color),
     );
   }
 
