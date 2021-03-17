@@ -2,11 +2,12 @@ library flutter_svg_provider;
 
 import 'dart:async';
 import 'dart:ui' as ui show Image, Picture;
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 /// Rasterizes given svg picture for displaying in [Image] widget:
 ///
@@ -25,15 +26,15 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Useful for [DecorationImage].
   /// If not specified, will use size from [Image].
   /// If [Image] not specifies size too, will use default size 100x100.
-  final Size size; // nullable
+  final Size? size; // nullable
 
   /// Color to tint the SVG
-  final Color color;
+  final Color? color;
 
   /// Width and height can also be specified from [Image] constrictor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
-  const Svg(this.asset, {this.size, this.color}) : assert(asset != null);
+  const Svg(this.asset, {this.size, this.color});
 
   @override
   Future<SvgImageKey> obtainKey(ImageConfiguration configuration) {
@@ -68,7 +69,8 @@ class Svg extends ImageProvider<SvgImageKey> {
         key.pixelHeight.toDouble(),
       ),
       clipToViewBox: false,
-      colorFilter: ColorFilter.mode(key.color, BlendMode.srcATop),
+      colorFilter:
+          ColorFilter.mode(key.color ?? Colors.transparent, BlendMode.srcATop),
     );
     final ui.Image image = await picture.toImage(
       key.pixelWidth,
@@ -91,15 +93,12 @@ class Svg extends ImageProvider<SvgImageKey> {
 @immutable
 class SvgImageKey {
   const SvgImageKey({
-    @required this.assetName,
-    @required this.pixelWidth,
-    @required this.pixelHeight,
-    @required this.scale,
+    required this.assetName,
+    required this.pixelWidth,
+    required this.pixelHeight,
+    required this.scale,
     this.color,
-  })  : assert(assetName != null),
-        assert(pixelWidth != null),
-        assert(pixelHeight != null),
-        assert(scale != null);
+  });
 
   /// Path to svg asset.
   final String assetName;
@@ -113,7 +112,7 @@ class SvgImageKey {
   final int pixelHeight;
 
   /// Color to tint the SVG
-  final Color color;
+  final Color? color;
 
   /// Used to calculate logical size from physical, i.e.
   /// logicalWidth = [pixelWidth] / [scale],
