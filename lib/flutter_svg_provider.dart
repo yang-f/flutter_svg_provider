@@ -25,15 +25,15 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Useful for [DecorationImage].
   /// If not specified, will use size from [Image].
   /// If [Image] not specifies size too, will use default size 100x100.
-  final Size size; // nullable
+  final Size? size; // nullable
 
   /// Color to tint the SVG
-  final Color color;
+  final Color? color;
 
   /// Width and height can also be specified from [Image] constrictor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
-  const Svg(this.asset, {this.size, this.color}) : assert(asset != null);
+  const Svg(this.asset, {this.size, this.color});
 
   @override
   Future<SvgImageKey> obtainKey(ImageConfiguration configuration) {
@@ -91,15 +91,12 @@ class Svg extends ImageProvider<SvgImageKey> {
 @immutable
 class SvgImageKey {
   const SvgImageKey({
-    @required this.assetName,
-    @required this.pixelWidth,
-    @required this.pixelHeight,
-    @required this.scale,
-    this.color,
-  })  : assert(assetName != null),
-        assert(pixelWidth != null),
-        assert(pixelHeight != null),
-        assert(scale != null);
+    required this.assetName,
+    required this.pixelWidth,
+    required this.pixelHeight,
+    required this.scale,
+    required this.color,
+  });
 
   /// Path to svg asset.
   final String assetName;
