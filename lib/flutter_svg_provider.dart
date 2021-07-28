@@ -21,7 +21,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 /// ```
 class Svg extends ImageProvider<SvgImageKey> {
   /// Path to svg file or asset
-  final String filePath;
+  final String path;
 
   /// Size in logical pixels to render.
   /// Useful for [DecorationImage].
@@ -38,7 +38,7 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Width and height can also be specified from [Image] constrictor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
-  const Svg(this.filePath, {this.size, this.color, this.isAsset: true});
+  const Svg(this.path, {this.size, this.color, this.isAsset: true});
 
   @override
   Future<SvgImageKey> obtainKey(ImageConfiguration configuration) {
@@ -49,7 +49,7 @@ class Svg extends ImageProvider<SvgImageKey> {
 
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
-          assetName: filePath,
+          assetName: path,
           pixelWidth: (logicWidth * scale).round(),
           pixelHeight: (logicHeight * scale).round(),
           scale: scale,
@@ -94,7 +94,7 @@ class Svg extends ImageProvider<SvgImageKey> {
   // [SvgImageKey] instances will be compared instead.
 
   @override
-  String toString() => '$runtimeType(${describeIdentity(filePath)})';
+  String toString() => '$runtimeType(${describeIdentity(path)})';
 }
 
 @immutable
