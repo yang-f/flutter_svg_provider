@@ -65,9 +65,9 @@ class Svg extends ImageProvider<SvgImageKey> {
   }
 
   static Future<ImageInfo> _loadAsync(SvgImageKey key, bool isAsset) async {
-    String rawSvg = (isAsset)?
-    await rootBundle.loadString(key.assetName):
-    await File(key.assetName).readAsString();
+    String rawSvg = (isAsset)
+        ? await rootBundle.loadString(key.assetName)
+        : await File(key.assetName).readAsString();
 
     final DrawableRoot svgRoot = await svg.fromSvgString(rawSvg, key.assetName);
     final ui.Picture picture = svgRoot.toPicture(
@@ -77,7 +77,7 @@ class Svg extends ImageProvider<SvgImageKey> {
       ),
       clipToViewBox: false,
       colorFilter:
-      ColorFilter.mode(key.color ?? Colors.transparent, BlendMode.srcATop),
+          ColorFilter.mode(key.color ?? Colors.transparent, BlendMode.srcATop),
     );
     final ui.Image image = await picture.toImage(
       key.pixelWidth,
