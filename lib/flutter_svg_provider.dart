@@ -1,6 +1,7 @@
 library flutter_svg_provider;
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui' as ui show Image, Picture;
 
 import 'package:flutter/foundation.dart';
@@ -19,8 +20,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 /// )
 /// ```
 class Svg extends ImageProvider<SvgImageKey> {
-  /// Path to svg file asset
-  final String asset;
+  /// Path to svg file or asset
+  final String path;
 
   /// Size in logical pixels to render.
   /// Useful for [DecorationImage].
@@ -31,10 +32,13 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Color to tint the SVG
   final Color? color;
 
+  /// Defines if the SVG is loaded from assets or read from a file.
+  final bool isAsset;
+
   /// Width and height can also be specified from [Image] constrictor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
-  const Svg(this.asset, {this.size, this.color});
+  const Svg(this.path, {this.size, this.color, this.isAsset: true});
 
   @override
   Future<SvgImageKey> obtainKey(ImageConfiguration configuration) {
@@ -45,7 +49,7 @@ class Svg extends ImageProvider<SvgImageKey> {
 
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
-          assetName: asset,
+          assetName: path,
           pixelWidth: (logicWidth * scale).round(),
           pixelHeight: (logicHeight * scale).round(),
           scale: scale,
@@ -56,12 +60,15 @@ class Svg extends ImageProvider<SvgImageKey> {
   @override
   ImageStreamCompleter load(SvgImageKey key, nil) {
     return OneFrameImageStreamCompleter(
-      _loadAsync(key),
+      _loadAsync(key, isAsset),
     );
   }
 
-  static Future<ImageInfo> _loadAsync(SvgImageKey key) async {
-    final String rawSvg = await rootBundle.loadString(key.assetName);
+  static Future<ImageInfo> _loadAsync(SvgImageKey key, bool isAsset) async {
+    String rawSvg = (isAsset)
+        ? await rootBundle.loadString(key.assetName)
+        : await File(key.assetName).readAsString();
+
     final DrawableRoot svgRoot = await svg.fromSvgString(rawSvg, key.assetName);
     final ui.Picture picture = svgRoot.toPicture(
       size: Size(
@@ -87,7 +94,7 @@ class Svg extends ImageProvider<SvgImageKey> {
   // [SvgImageKey] instances will be compared instead.
 
   @override
-  String toString() => '$runtimeType(${describeIdentity(asset)})';
+  String toString() => '$runtimeType(${describeIdentity(path)})';
 }
 
 @immutable
