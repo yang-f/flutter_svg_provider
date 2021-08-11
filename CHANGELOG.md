@@ -41,3 +41,8 @@
 ## [0.1.9] - 2021.4.29
 
 - Migrate
+
+
+## [0.1.10] - 2021.8.11
+
+- Support images from file system
