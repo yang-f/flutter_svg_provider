@@ -46,3 +46,8 @@
 ## [0.1.10] - 2021.8.11
 
 - Support images from file system
+
+
+## [0.1.11] - 2021.10.25
+
+- Update flutter_svg version to 0.23.0+1
