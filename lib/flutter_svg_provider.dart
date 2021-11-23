@@ -54,7 +54,7 @@ class Svg extends ImageProvider<SvgImageKey> {
     this.size,
     this.scale,
     this.color,
-    this.source = SvgSource.file,
+    this.source = SvgSource.asset,
   });
 
   @override
