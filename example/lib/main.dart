@@ -38,10 +38,19 @@ class MyHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image(
-                width: 500,
-                height: 500,
+                width: 200,
+                height: 200,
                 image: Svg('assets/test.svg'),
                 color: Colors.red,
+              ),
+              SizedBox(height: 50),
+              Image(
+                width: 200,
+                height: 200,
+                image: Svg(
+                  'https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/ubuntu.svg',
+                  source: SvgSource.network,
+                ),
               ),
             ],
           ),
