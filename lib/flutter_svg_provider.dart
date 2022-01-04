@@ -102,7 +102,7 @@ class Svg extends ImageProvider<SvgImageKey> {
       ),
       clipToViewBox: false,
       colorFilter: ColorFilter.mode(
-        key.color ?? Colors.transparent,
+        getFilterColor(key.color),
         BlendMode.srcATop,
       ),
     );
@@ -122,6 +122,15 @@ class Svg extends ImageProvider<SvgImageKey> {
   // [SvgImageKey] instances will be compared instead.
   @override
   String toString() => '$runtimeType(${describeIdentity(path)})';
+  
+  // Running on web with Colors.transparent may throws the exception `Expected a value of type 'SkDeletable', but got one of type 'Null'`.
+  static Color getFilterColor(color) {
+    if (kIsWeb && color == Colors.transparent) {
+      return const Color(0x01ffffff);
+    } else {
+      return color;
+    }
+  }
 }
 
 @immutable
