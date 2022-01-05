@@ -128,7 +128,7 @@ class Svg extends ImageProvider<SvgImageKey> {
     if (kIsWeb && color == Colors.transparent) {
       return const Color(0x01ffffff);
     } else {
-      return color;
+      return color ?? Colors.transparent;
     }
   }
 }
