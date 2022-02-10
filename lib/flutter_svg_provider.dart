@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:ui' as ui show Image, Picture;
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -122,7 +121,7 @@ class Svg extends ImageProvider<SvgImageKey> {
   // [SvgImageKey] instances will be compared instead.
   @override
   String toString() => '$runtimeType(${describeIdentity(path)})';
-  
+
   // Running on web with Colors.transparent may throws the exception `Expected a value of type 'SkDeletable', but got one of type 'Null'`.
   static Color getFilterColor(color) {
     if (kIsWeb && color == Colors.transparent) {
