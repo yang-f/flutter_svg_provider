@@ -45,7 +45,7 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Image scale.
   final double? scale;
 
-  /// Width and height can also be specified from [Image] constrictor.
+  /// Width and height can also be specified from [Image] constructor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
   const Svg(
