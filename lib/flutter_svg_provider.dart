@@ -10,6 +10,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+/// Get svg string.
+typedef SvgStringGetter = Future<String?> Function(SvgImageKey key);
+
 /// An [Enum] of the possible image path sources.
 enum SvgSource {
   file,
@@ -45,6 +48,11 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Image scale.
   final double? scale;
 
+  /// Get svg string.
+  /// Override the default get method.
+  /// When returning null, use the default method.
+  final SvgStringGetter? svgGetter;
+
   /// Width and height can also be specified from [Image] constructor.
   /// Default size is 100x100 logical pixels.
   /// Different size can be specified in [Image] parameters
@@ -54,6 +62,7 @@ class Svg extends ImageProvider<SvgImageKey> {
     this.scale,
     this.color,
     this.source = SvgSource.asset,
+    this.svgGetter,
   });
 
   @override
@@ -71,6 +80,7 @@ class Svg extends ImageProvider<SvgImageKey> {
         source: source,
         pixelWidth: (logicWidth * scale).round(),
         pixelHeight: (logicHeight * scale).round(),
+        svgGetter: svgGetter,
       ),
     );
   }
@@ -81,6 +91,12 @@ class Svg extends ImageProvider<SvgImageKey> {
   }
 
   static Future<String> _getSvgString(SvgImageKey key) async {
+    if (key.svgGetter != null) {
+      final rawSvg = await key.svgGetter!.call(key);
+      if (rawSvg != null) {
+        return rawSvg;
+      }
+    }
     switch (key.source) {
       case SvgSource.network:
         return await http.read(Uri.parse(key.path));
@@ -141,6 +157,7 @@ class SvgImageKey {
     required this.scale,
     required this.source,
     this.color,
+    this.svgGetter,
   });
 
   /// Path to svg asset.
@@ -166,6 +183,9 @@ class SvgImageKey {
   /// Should be equal to [MediaQueryData.devicePixelRatio].
   final double scale;
 
+  /// Svg string getter.
+  final SvgStringGetter? svgGetter;
+
   @override
   bool operator ==(Object other) {
     if (other.runtimeType != runtimeType) {
@@ -177,11 +197,13 @@ class SvgImageKey {
         other.pixelWidth == pixelWidth &&
         other.pixelHeight == pixelHeight &&
         other.scale == scale &&
-        other.source == source;
+        other.source == source &&
+        other.svgGetter == svgGetter;
   }
 
   @override
-  int get hashCode => hashValues(path, pixelWidth, pixelHeight, scale, source);
+  int get hashCode =>
+      hashValues(path, pixelWidth, pixelHeight, scale, source, svgGetter);
 
   @override
   String toString() => '${objectRuntimeType(this, 'SvgImageKey')}'
