@@ -115,13 +115,13 @@ class Svg extends ImageProvider<SvgImageKey> {
       clipViewbox: false,
     );
     final ui.Image image = await pictureInfo.picture.toImage(
-      key.pixelWidth,
-      key.pixelHeight,
+      pictureInfo.size.width.round(),
+      pictureInfo.size.height.round(),
     );
 
     return ImageInfo(
       image: image,
-      scale: key.scale,
+      scale: 1.0,
     );
   }
 
