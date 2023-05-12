@@ -1,14 +1,14 @@
 library flutter_svg_provider;
 
-import 'dart:io';
 import 'dart:async';
-import 'dart:ui' as ui show Image;
+import 'dart:io';
+import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 /// Get svg string.
 typedef SvgStringGetter = Future<String?> Function(SvgImageKey key);
@@ -110,10 +110,12 @@ class Svg extends ImageProvider<SvgImageKey> {
   static Future<ImageInfo> _loadAsync(SvgImageKey key) async {
     final String rawSvg = await _getSvgString(key);
     final PictureInfo pictureInfo = await vg.loadPicture(SvgStringLoader(rawSvg), null);
-    final ui.Image image = await pictureInfo.picture.toImage(
-      key.pixelWidth,
-      key.pixelHeight,
-    );
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final ui.Canvas canvas = ui.Canvas(recorder);
+    canvas.scale(key.scale, key.scale);
+    canvas.drawPicture(pictureInfo.picture);
+    final ui.Picture scaledPicture = recorder.endRecording();
+    final image = await scaledPicture.toImage(key.pixelWidth, key.pixelHeight);
     pictureInfo.picture.dispose();
     return ImageInfo(
       image: image,
@@ -191,8 +193,7 @@ class SvgImageKey {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(path, pixelWidth, pixelHeight, scale, source, svgGetter);
+  int get hashCode => Object.hash(path, pixelWidth, pixelHeight, scale, source, svgGetter);
 
   @override
   String toString() => '${objectRuntimeType(this, 'SvgImageKey')}'
