@@ -2,7 +2,7 @@ library flutter_svg_provider;
 
 import 'dart:io';
 import 'dart:async';
-import 'dart:ui' as ui show Image, Picture;
+import 'dart:ui' as ui show Image;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -109,23 +109,12 @@ class Svg extends ImageProvider<SvgImageKey> {
 
   static Future<ImageInfo> _loadAsync(SvgImageKey key) async {
     final String rawSvg = await _getSvgString(key);
-    final DrawableRoot svgRoot = await svg.fromSvgString(rawSvg, key.path);
-    final ui.Picture picture = svgRoot.toPicture(
-      size: Size(
-        key.pixelWidth.toDouble(),
-        key.pixelHeight.toDouble(),
-      ),
-      clipToViewBox: false,
-      colorFilter: ColorFilter.mode(
-        getFilterColor(key.color),
-        BlendMode.srcATop,
-      ),
-    );
-    final ui.Image image = await picture.toImage(
+    final PictureInfo pictureInfo = await vg.loadPicture(SvgStringLoader(rawSvg), null);
+    final ui.Image image = await pictureInfo.picture.toImage(
       key.pixelWidth,
       key.pixelHeight,
     );
-
+    pictureInfo.picture.dispose();
     return ImageInfo(
       image: image,
       scale: key.scale,
