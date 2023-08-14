@@ -70,7 +70,7 @@ class Svg extends ImageProvider<SvgImageKey> {
     final Color color = this.color ?? Colors.transparent;
     final double scale = this.scale ?? configuration.devicePixelRatio ?? 1.0;
     final double logicWidth = size?.width ?? configuration.size?.width ?? 100;
-    final double logicHeight = size?.height ?? configuration.size?.width ?? 100;
+    final double logicHeight = size?.height ?? configuration.size?.height ?? 100;
 
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
