@@ -2,7 +2,7 @@ library flutter_svg_provider;
 
 import 'dart:io';
 import 'dart:async';
-import 'dart:ui' as ui show Image, Picture;
+import 'dart:ui' as ui show Image;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -86,7 +86,7 @@ class Svg extends ImageProvider<SvgImageKey> {
   }
 
   @override
-  ImageStreamCompleter load(SvgImageKey key, nil) {
+  ImageStreamCompleter loadImage(SvgImageKey key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(_loadAsync(key));
   }
 
