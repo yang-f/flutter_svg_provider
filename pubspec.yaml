@@ -4,22 +4,34 @@ version: 1.0.5
 homepage: https://github.com/yang-f/flutter_svg_provider
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.4.0-0.0.pre"
+  sdk: ">=2.18.0 <4.0.0"
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.1.0
-  flutter_svg: ^2.0.7
+  http: ^1.1.2
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+plugin:
+  platforms:
+    android:
+      package: com.example.example
+      pluginClass: Svg
+    ios:
+      pluginClass: Svg
+    macos:
+      pluginClass: Svg
+    web:
+      pluginClass: Svg
+      fileName: flutter_svg_provider.dart
 # The following section is specific to Flutter.
 flutter:
   # To add assets to your package, add an assets section, like this:

@@ -2,7 +2,7 @@ library flutter_svg_provider;
 
 import 'dart:io';
 import 'dart:async';
-import 'dart:ui' as ui show Image, Picture;
+import 'dart:ui' as ui show Image;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -70,7 +70,8 @@ class Svg extends ImageProvider<SvgImageKey> {
     final Color color = this.color ?? Colors.transparent;
     final double scale = this.scale ?? configuration.devicePixelRatio ?? 1.0;
     final double logicWidth = size?.width ?? configuration.size?.width ?? 100;
-    final double logicHeight = size?.height ?? configuration.size?.height ?? 100;
+    final double logicHeight =
+        size?.height ?? configuration.size?.height ?? 100;
 
     return SynchronousFuture<SvgImageKey>(
       SvgImageKey(
@@ -86,8 +87,10 @@ class Svg extends ImageProvider<SvgImageKey> {
   }
 
   @override
-  ImageStreamCompleter load(SvgImageKey key, nil) {
-    return OneFrameImageStreamCompleter(_loadAsync(key));
+  ImageStreamCompleter loadImage(SvgImageKey key, ImageDecoderCallback decode) {
+    return OneFrameImageStreamCompleter(
+      _loadAsync(key),
+    );
   }
 
   static Future<String> _getSvgString(SvgImageKey key) async {
