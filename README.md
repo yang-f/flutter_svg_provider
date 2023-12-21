@@ -9,9 +9,14 @@ Svg is parsed using flutter_svg dependency.
 ```dart
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 
-Image(
+final img1 = Image(
   width: 32,
   height: 32,
   image: Svg('assets/my_icon.svg'),
+)
+final img2 = Image(
+  width: 32,
+  height: 32,
+  image: Svg('<svg>...</svg>',source: SvgSource.raw),
 )
 ```
