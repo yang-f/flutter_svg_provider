@@ -117,10 +117,15 @@ class Svg extends ImageProvider<SvgImageKey> {
       null,
       clipViewbox: false,
     );
-    final image = pictureInfo.picture.toImageSync(
-      pictureInfo.size.width.round(),
-      pictureInfo.size.height.round(),
-    );
+    final image = kIsWeb
+        ? await pictureInfo.picture.toImage(
+            pictureInfo.size.width.round(),
+            pictureInfo.size.height.round(),
+          )
+        : pictureInfo.picture.toImageSync(
+            pictureInfo.size.width.round(),
+            pictureInfo.size.height.round(),
+          );
 
     return ImageInfo(
       image: image,
