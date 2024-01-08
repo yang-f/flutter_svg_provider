@@ -95,7 +95,7 @@ class Svg extends ImageProvider<SvgImageKey> {
 
   static Future<String> _getSvgString(SvgImageKey key) async {
     if (key.svgGetter != null) {
-      final rawSvg = await key.svgGetter!.call(key);
+      final rawSvg = await key.svgGetter!(key);
       if (rawSvg != null) {
         return rawSvg;
       }
@@ -111,20 +111,19 @@ class Svg extends ImageProvider<SvgImageKey> {
   }
 
   static Future<ImageInfo> _loadAsync(SvgImageKey key) async {
-    final String rawSvg = await _getSvgString(key);
+    final rawSvg = await _getSvgString(key);
     final pictureInfo = await vg.loadPicture(
       SvgStringLoader(rawSvg),
       null,
       clipViewbox: false,
     );
-    final ui.Image image = await pictureInfo.picture.toImage(
+    final image = pictureInfo.picture.toImageSync(
       pictureInfo.size.width.round(),
       pictureInfo.size.height.round(),
     );
 
     return ImageInfo(
       image: image,
-      scale: 1.0,
     );
   }
 
