@@ -18,6 +18,7 @@ enum SvgSource {
   file,
   asset,
   network,
+  raw,
 }
 
 /// Rasterizes given svg picture for displaying in [Image] widget:
@@ -107,6 +108,8 @@ class Svg extends ImageProvider<SvgImageKey> {
         return await rootBundle.loadString(key.path);
       case SvgSource.file:
         return await File(key.path).readAsString();
+      case SvgSource.raw:
+        return key.path;
     }
   }
 
