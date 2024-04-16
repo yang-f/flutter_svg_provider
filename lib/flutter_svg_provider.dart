@@ -197,14 +197,15 @@ class SvgImageKey {
         other.pixelHeight == pixelHeight &&
         other.scale == scale &&
         other.source == source &&
-        other.svgGetter == svgGetter;
+        other.svgGetter == svgGetter &&
+        other.color == color;
   }
 
   @override
   int get hashCode =>
-      Object.hash(path, pixelWidth, pixelHeight, scale, source, svgGetter);
+      Object.hash(path, pixelWidth, pixelHeight, scale, source, svgGetter, color);
 
   @override
   String toString() => '${objectRuntimeType(this, 'SvgImageKey')}'
-      '(path: "$path", pixelWidth: $pixelWidth, pixelHeight: $pixelHeight, scale: $scale, source: $source)';
+      '(path: "$path", pixelWidth: $pixelWidth, pixelHeight: $pixelHeight, color: $color, scale: $scale, source: $source)';
 }
