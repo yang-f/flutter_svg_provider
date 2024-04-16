@@ -90,7 +90,7 @@ class Svg extends ImageProvider<SvgImageKey> {
   @override
   ImageStreamCompleter loadImage(SvgImageKey key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(
-      _loadAsync(key),
+      _loadAsync(key, getFilterColor(color)),
     );
   }
 
@@ -113,10 +113,10 @@ class Svg extends ImageProvider<SvgImageKey> {
     }
   }
 
-  static Future<ImageInfo> _loadAsync(SvgImageKey key) async {
+  static Future<ImageInfo> _loadAsync(SvgImageKey key, Color color) async {
     final String rawSvg = await _getSvgString(key);
     final pictureInfo = await vg.loadPicture(
-      SvgStringLoader(rawSvg),
+      SvgStringLoader(rawSvg, theme: SvgTheme(currentColor: color)),
       null,
       clipViewbox: false,
     );
