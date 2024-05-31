@@ -90,7 +90,7 @@ class Svg extends ImageProvider<SvgImageKey> {
   @override
   ImageStreamCompleter loadImage(SvgImageKey key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(
-      _loadAsync(key),
+      _loadAsync(key, getFilterColor(color)),
     );
   }
 
@@ -113,10 +113,10 @@ class Svg extends ImageProvider<SvgImageKey> {
     }
   }
 
-  static Future<ImageInfo> _loadAsync(SvgImageKey key) async {
+  static Future<ImageInfo> _loadAsync(SvgImageKey key, Color color) async {
     final String rawSvg = await _getSvgString(key);
     final pictureInfo = await vg.loadPicture(
-      SvgStringLoader(rawSvg),
+      SvgStringLoader(rawSvg, theme: SvgTheme(currentColor: color)),
       null,
       clipViewbox: false,
     );
@@ -197,14 +197,15 @@ class SvgImageKey {
         other.pixelHeight == pixelHeight &&
         other.scale == scale &&
         other.source == source &&
-        other.svgGetter == svgGetter;
+        other.svgGetter == svgGetter &&
+        other.color == color;
   }
 
   @override
   int get hashCode =>
-      Object.hash(path, pixelWidth, pixelHeight, scale, source, svgGetter);
+      Object.hash(path, pixelWidth, pixelHeight, scale, source, svgGetter, color);
 
   @override
   String toString() => '${objectRuntimeType(this, 'SvgImageKey')}'
-      '(path: "$path", pixelWidth: $pixelWidth, pixelHeight: $pixelHeight, scale: $scale, source: $source)';
+      '(path: "$path", pixelWidth: $pixelWidth, pixelHeight: $pixelHeight, color: $color, scale: $scale, source: $source)';
 }
