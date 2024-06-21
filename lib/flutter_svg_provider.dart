@@ -46,6 +46,10 @@ class Svg extends ImageProvider<SvgImageKey> {
   /// Source of svg image
   final SvgSource source;
 
+  /// Http headers to access network svg
+  /// Only for network svg
+  final Map<String, String>? httpHeaders;
+
   /// Image scale.
   final double? scale;
 
@@ -63,6 +67,7 @@ class Svg extends ImageProvider<SvgImageKey> {
     this.scale,
     this.color,
     this.source = SvgSource.asset,
+    this.httpHeaders,
     this.svgGetter,
   });
 
@@ -80,6 +85,7 @@ class Svg extends ImageProvider<SvgImageKey> {
         scale: scale,
         color: color,
         source: source,
+        httpHeaders: httpHeaders,
         pixelWidth: (logicWidth * scale).round(),
         pixelHeight: (logicHeight * scale).round(),
         svgGetter: svgGetter,
@@ -103,7 +109,7 @@ class Svg extends ImageProvider<SvgImageKey> {
     }
     switch (key.source) {
       case SvgSource.network:
-        return await http.read(Uri.parse(key.path));
+        return await http.read(Uri.parse(key.path), headers: key.httpHeaders);
       case SvgSource.asset:
         return await rootBundle.loadString(key.path);
       case SvgSource.file:
@@ -159,6 +165,7 @@ class SvgImageKey {
     required this.pixelHeight,
     required this.scale,
     required this.source,
+    this.httpHeaders,
     this.color,
     this.svgGetter,
   });
@@ -179,6 +186,10 @@ class SvgImageKey {
 
   /// Image source.
   final SvgSource source;
+
+  /// Http headers to access network svg
+  /// Only for network svg
+  final Map<String, String>? httpHeaders;
 
   /// Used to calculate logical size from physical, i.e.
   /// logicalWidth = [pixelWidth] / [scale],
@@ -201,15 +212,16 @@ class SvgImageKey {
         other.pixelHeight == pixelHeight &&
         other.scale == scale &&
         other.source == source &&
+        mapEquals(other.httpHeaders, httpHeaders) && // Compare httpHeaders
         other.svgGetter == svgGetter &&
         other.color == color;
   }
 
   @override
   int get hashCode =>
-      Object.hash(path, pixelWidth, pixelHeight, scale, source, svgGetter, color);
+      Object.hash(path, pixelWidth, pixelHeight, scale, source, httpHeaders, svgGetter, color);
 
   @override
   String toString() => '${objectRuntimeType(this, 'SvgImageKey')}'
-      '(path: "$path", pixelWidth: $pixelWidth, pixelHeight: $pixelHeight, color: $color, scale: $scale, source: $source)';
+      '(path: "$path", pixelWidth: $pixelWidth, pixelHeight: $pixelHeight, color: $color, scale: $scale, source: $source, httpHeaders: $httpHeaders)';
 }
