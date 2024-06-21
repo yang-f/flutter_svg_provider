@@ -126,19 +126,24 @@ class Svg extends ImageProvider<SvgImageKey> {
       null,
       clipViewbox: false,
     );
-    final image = kIsWeb
-        ? await pictureInfo.picture.toImage(
-            pictureInfo.size.width.round(),
-            pictureInfo.size.height.round(),
-          )
-        : pictureInfo.picture.toImageSync(
-            pictureInfo.size.width.round(),
-            pictureInfo.size.height.round(),
-          );
 
-    return ImageInfo(
-      image: image,
-    );
+    try {
+      final image = kIsWeb
+          ? await pictureInfo.picture.toImage(
+              pictureInfo.size.width.round(),
+              pictureInfo.size.height.round(),
+            )
+          : pictureInfo.picture.toImageSync(
+              pictureInfo.size.width.round(),
+              pictureInfo.size.height.round(),
+            );
+      return ImageInfo(
+        image: image,
+      );
+    } finally {
+      // Dispose of the Picture to release resources
+      pictureInfo.picture.dispose();
+    }
   }
 
   // Note: == and hashCode not overrided as changes in properties
